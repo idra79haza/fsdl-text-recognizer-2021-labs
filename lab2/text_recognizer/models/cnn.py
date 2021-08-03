@@ -33,9 +33,18 @@ class ConvBlock(nn.Module):
         torch.Tensor
             of dimensions (B, C, H, W)
         """
-        c = self.conv(x)
-        r = self.relu(c)
-        return r
+        shortcut = x
+        
+        out = self.conv(x)
+        out = self.bn(out)
+        out = self.relu(out)
+        
+        out = self.conv(out)
+        out = self.bn(out)
+        
+        out += shortcut
+        ouot = self.relu(out)
+        return out
 
 
 class CNN(nn.Module):
