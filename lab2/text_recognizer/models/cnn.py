@@ -19,6 +19,7 @@ class ConvBlock(nn.Module):
     def __init__(self, input_channels: int, output_channels: int) -> None:
         super().__init__()
         self.conv = nn.Conv2d(input_channels, output_channels, kernel_size=3, stride=1, padding=1)
+        self.bn = nn.BatchNorm2d(output_channels)
         self.relu = nn.ReLU()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -43,7 +44,7 @@ class ConvBlock(nn.Module):
         out = self.bn(out)
         
         out += shortcut
-        ouot = self.relu(out)
+        out = self.relu(out)
         return out
 
 
