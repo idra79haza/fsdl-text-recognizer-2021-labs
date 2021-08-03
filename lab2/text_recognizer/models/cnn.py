@@ -46,6 +46,8 @@ class ConvBlock(nn.Module):
         out += shortcut
         out = self.relu(out)
         return out
+    
+        # github commit test. why comming mine is read as pyy0715?
 
 
 class CNN(nn.Module):
