@@ -48,7 +48,7 @@ class ConvBlock(nn.Module):
         return out
     
         # github commit test. why comming mine is read as pyy0715?
-
+        # test again
 
 class CNN(nn.Module):
     """Simple CNN for recognizing characters in a square image."""
