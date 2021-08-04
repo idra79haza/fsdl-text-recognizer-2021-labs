@@ -12,6 +12,7 @@ sys.path.append('/home/arrc/fsdl-text-recognizer-2021-labs/lab1')
 from text_recognizer import lit_models
 
 
+
 # In order to ensure reproducible experiments, we must set random seeds.
 np.random.seed(42)
 torch.manual_seed(42)
