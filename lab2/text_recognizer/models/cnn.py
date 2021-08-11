@@ -19,6 +19,7 @@ class ConvBlock(nn.Module):
     def __init__(self, input_channels: int, output_channels: int) -> None:
         super().__init__()
         self.conv = nn.Conv2d(input_channels, output_channels, kernel_size=3, stride=1, padding=1)
+        self.bn = nn.BatchNorm2d(output_channels)
         self.relu = nn.ReLU()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -33,10 +34,21 @@ class ConvBlock(nn.Module):
         torch.Tensor
             of dimensions (B, C, H, W)
         """
-        c = self.conv(x)
-        r = self.relu(c)
-        return r
-
+        shortcut = x
+        
+        out = self.conv(x)
+        out = self.bn(out)
+        out = self.relu(out)
+        
+        out = self.conv(out)
+        out = self.bn(out)
+        
+        out += shortcut
+        out = self.relu(out)
+        return out
+    
+        # github commit test. why comming mine is read as pyy0715?
+        # test again
 
 class CNN(nn.Module):
     """Simple CNN for recognizing characters in a square image."""

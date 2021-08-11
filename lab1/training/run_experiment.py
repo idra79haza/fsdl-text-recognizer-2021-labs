@@ -7,7 +7,10 @@ import torch
 import pytorch_lightning as pl
 import wandb
 
+import sys
+sys.path.append('/home/arrc/fsdl-text-recognizer-2021-labs/lab1')
 from text_recognizer import lit_models
+
 
 
 # In order to ensure reproducible experiments, we must set random seeds.
@@ -65,6 +68,10 @@ def main():
     python training/run_experiment.py --max_epochs=3 --gpus='0,' --num_workers=20 --model_class=MLP --data_class=MNIST
     ```
     """
+
+    # Wandb
+    wandb.init()
+
     parser = _setup_parser()
     args = parser.parse_args()
     data_class = _import_class(f"text_recognizer.data.{args.data_class}")
@@ -79,6 +86,10 @@ def main():
         lit_model = lit_model_class.load_from_checkpoint(args.load_checkpoint, args=args, model=model)
     else:
         lit_model = lit_model_class(args=args, model=model)
+
+    # Wandb
+    wandb.config.update(args)
+
 
     logger = pl.loggers.TensorBoardLogger("training/logs")
 
@@ -96,6 +107,10 @@ def main():
 
     trainer.fit(lit_model, datamodule=data)
     trainer.test(lit_model, datamodule=data)
+
+    # Wandb
+    wandb.watch(model)
+
     # pylint: enable=no-member
 
 
